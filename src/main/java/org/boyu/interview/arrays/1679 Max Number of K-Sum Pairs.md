@@ -5,6 +5,10 @@
 ## Desc
 
 + numbers are not necessarily sorted
++ Constraints:
+    + 1 <= nums.length <= 10^5
+    + 1 <= nums[i] <= 10^9
+    + 1 <= k <= 10^9
 
 ## Retro
 
