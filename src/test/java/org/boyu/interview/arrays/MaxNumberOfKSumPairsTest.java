@@ -10,6 +10,20 @@ class MaxNumberOfKSumPairsTest {
     class MaxOperationsTest {
 
         @Test
+        void should_return_0_given_0_pair_found() {
+            // given
+            final MaxNumberOfKSumPairs sut = new MaxNumberOfKSumPairs();
+            final int[] nums = {3, 5, 1, 5};
+            final int k = 2;
+
+            // when
+            final int result = sut.maxOperations(nums, k);
+
+            // then
+            assertThat(result).isEqualTo(0);
+        }
+
+        @Test
         void should_return_1_given_1_pair() {
             // given
             final MaxNumberOfKSumPairs sut = new MaxNumberOfKSumPairs();

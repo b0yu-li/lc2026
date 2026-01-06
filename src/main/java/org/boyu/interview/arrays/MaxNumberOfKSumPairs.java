@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class MaxNumberOfKSumPairs {
     public int maxOperations(int[] nums, int k) {
-        // TODO: #1679 - Impl.
         final List<Integer> list = new ArrayList<>();
         for (int num : nums) {
             list.add(num);
@@ -16,20 +15,23 @@ public class MaxNumberOfKSumPairs {
 
         int pairCounter = 0;
 
-        final Map<Integer, List<Integer>> collected = list.stream().collect(groupingBy(it -> it));
-        for (Integer pairCandidate : collected.keySet()) {
-            final int remainingLivesForCurrentCandidate = collected.get(pairCandidate).size();
+        final Map<Integer, List<Integer>> map = list.stream().collect(groupingBy(it -> it));
+        for (Integer pairCandidate : map.keySet()) {
+            final int remainingLivesForCurrentCandidate = map.get(pairCandidate).size();
             if (remainingLivesForCurrentCandidate < 1) {
                 continue;
             }
-            final int supplePairLives = collected.getOrDefault(k - pairCandidate, new ArrayList<>()).size();
-            if (supplePairLives < 1) {
-                continue;
-            }
+            map.get(pairCandidate).remove(0);
 
-            pairCounter++;
-            collected.get(pairCandidate).remove(0);
-            collected.get(k - pairCandidate).remove(0);
+            final int supplePairLives = map.getOrDefault(k - pairCandidate, new ArrayList<>()).size();
+            final boolean foundAPair = supplePairLives >= 1;
+
+            if (foundAPair) {
+                pairCounter++;
+                map.get(k - pairCandidate).remove(0);
+            } else {
+                map.get(pairCandidate).add(pairCandidate);
+            }
         }
         return pairCounter;
     }
