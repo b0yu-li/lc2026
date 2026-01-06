@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.groupingBy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MaxNumberOfKSumPairs {
     public int maxOperations(int[] nums, int k) {
@@ -15,32 +16,33 @@ public class MaxNumberOfKSumPairs {
 
         int pairCounter = 0;
 
-        final Map<Integer, List<Integer>> map = list.stream().collect(groupingBy(it -> it));
+        // TODO: #1679 - Refactor
+        final Map<Integer, Long> map = list.stream().collect(groupingBy(it -> it, Collectors.counting()));
         for (Integer pairCandidate : map.keySet()) {
             boolean amIDoneWithThisKey = false;
 
             while (!amIDoneWithThisKey) {
-                final int remainingLivesForCurrentCandidate = map.get(pairCandidate).size();
+                final Long remainingLivesForCurrentCandidate = map.get(pairCandidate);
                 if (remainingLivesForCurrentCandidate < 1) {
                     amIDoneWithThisKey = true;
                     continue;
                 }
                 // tentatively remove this candidate, if fail to form a pair, revive it
-                map.get(pairCandidate).remove(0);
+                map.put(pairCandidate, remainingLivesForCurrentCandidate - 1);
 
-                final int supplePairLives = map.getOrDefault(k - pairCandidate, new ArrayList<>()).size();
+                final Long supplePairLives = map.getOrDefault(k - pairCandidate, 0L);
                 final boolean foundAPair = supplePairLives >= 1;
 
                 if (foundAPair) {
                     pairCounter++;
-                    map.get(k - pairCandidate).remove(0);
+                    map.put(k - pairCandidate, supplePairLives - 1);
                 } else {
-                    map.get(pairCandidate).add(pairCandidate);
+                    map.put(pairCandidate, remainingLivesForCurrentCandidate);
                     amIDoneWithThisKey = true;
                     continue;
                 }
 
-                if (map.get(pairCandidate).size() < 2) {
+                if (map.get(pairCandidate) < 2) {
                     amIDoneWithThisKey = true;
                 }
             }
