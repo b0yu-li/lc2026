@@ -50,5 +50,19 @@ class MaxNumberOfKSumPairsTest {
             // then
             assertThat(result).isEqualTo(2);
         }
+
+        @Test
+        void should_return_2_given_2_pairs_2() {
+            // given
+            final MaxNumberOfKSumPairs sut = new MaxNumberOfKSumPairs();
+            final int[] nums = {4, 4, 1, 3, 1, 3, 2, 2, 5, 5, 1, 5, 2, 1, 2, 3, 5, 4};
+            final int k = 2;
+
+            // when
+            final int result = sut.maxOperations(nums, k);
+
+            // then
+            assertThat(result).isEqualTo(2);
+        }
     }
 }

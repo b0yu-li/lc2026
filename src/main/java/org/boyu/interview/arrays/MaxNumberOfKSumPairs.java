@@ -17,21 +17,34 @@ public class MaxNumberOfKSumPairs {
 
         final Map<Integer, List<Integer>> map = list.stream().collect(groupingBy(it -> it));
         for (Integer pairCandidate : map.keySet()) {
-            final int remainingLivesForCurrentCandidate = map.get(pairCandidate).size();
-            if (remainingLivesForCurrentCandidate < 1) {
-                continue;
-            }
-            map.get(pairCandidate).remove(0);
+            boolean amIDoneWithThisKey = false;
 
-            final int supplePairLives = map.getOrDefault(k - pairCandidate, new ArrayList<>()).size();
-            final boolean foundAPair = supplePairLives >= 1;
+            while (!amIDoneWithThisKey) {
+                final int remainingLivesForCurrentCandidate = map.get(pairCandidate).size();
+                if (remainingLivesForCurrentCandidate < 1) {
+                    amIDoneWithThisKey = true;
+                    continue;
+                }
+                // tentatively remove this candidate, if fail to form a pair, revive it
+                map.get(pairCandidate).remove(0);
 
-            if (foundAPair) {
-                pairCounter++;
-                map.get(k - pairCandidate).remove(0);
-            } else {
-                map.get(pairCandidate).add(pairCandidate);
+                final int supplePairLives = map.getOrDefault(k - pairCandidate, new ArrayList<>()).size();
+                final boolean foundAPair = supplePairLives >= 1;
+
+                if (foundAPair) {
+                    pairCounter++;
+                    map.get(k - pairCandidate).remove(0);
+                } else {
+                    map.get(pairCandidate).add(pairCandidate);
+                    amIDoneWithThisKey = true;
+                    continue;
+                }
+
+                if (map.get(pairCandidate).size() < 2) {
+                    amIDoneWithThisKey = true;
+                }
             }
+
         }
         return pairCounter;
     }
