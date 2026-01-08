@@ -14,7 +14,15 @@
 
 ### Time Complexity Analysis
 
++ (Waiting Room Analogy): _O(N)_
+    + I iterate through the array exactly once.
+    + HashMap operations (put, get, containsKey) are O(1) on average.
+
 ### Space Complexity Analysis
+
++ (Waiting Room Analogy): _O(N)_ (worst-case scenario)
+    + In the worst case (e.g., [1, 2, 3, 4] with k=100), no pairs are found, and every single number is stored in the
+      map.
 
 ### Key & What to bear in mind
 
