@@ -1,24 +1,35 @@
 package org.boyu.interview.arrays;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 
 public class MaxNumberOfKSumPairs {
     public int maxOperations(int[] nums, int k) {
-        // TODO: #1679 - Impl. the waiting room analogy
-        final Map<Integer, Integer> waitingRoom = new HashMap<>();
-        int count = 0;
+        // Step 0: Line them up smallest to biggest (sorting)
+        final int[] sorted = Arrays.stream(nums).sorted().toArray();
 
-        for (int currentGuest : nums) {
-            final int partner = k - currentGuest;
-            final Integer candidatePartnersCount = waitingRoom.getOrDefault(partner, 0);
-            if (candidatePartnersCount > 0) {
-                waitingRoom.put(partner, candidatePartnersCount - 1);
+        int count = 0;
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            final int leftCandidate = sorted[left];
+            final int rightCandidate = sorted[right];
+            // Case I: Found one pair, congrads! Let both go and count them up!
+            if (k == leftCandidate + rightCandidate) {
                 count++;
+                left++;
+                right--;
                 continue;
             }
-            final Integer existingCountOfCurrentGuest = waitingRoom.getOrDefault(currentGuest, 0);
-            waitingRoom.put(currentGuest, existingCountOfCurrentGuest + 1);
+            // Case II: One has to be bigger, only LEFT side can be bigger
+            if (k > leftCandidate + rightCandidate) {
+                left++;
+                continue;
+            }
+            // Case II: One has to be smaller, only RIGHT side can be smaller
+            if (k < leftCandidate + rightCandidate) {
+                right--;
+            }
         }
 
         return count;
