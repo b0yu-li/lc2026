@@ -11,8 +11,8 @@ public class MaxNumberOfKSumPairs {
 
         for (int currentGuest : nums) {
             final int partner = k - currentGuest;
-            if (waitingRoom.containsKey(partner) && waitingRoom.get(partner) > 0) {
-                final Integer candidatePartnersCount = waitingRoom.get(partner);
+            final Integer candidatePartnersCount = waitingRoom.getOrDefault(partner, 0);
+            if (candidatePartnersCount > 0) {
                 waitingRoom.put(partner, candidatePartnersCount - 1);
                 count++;
                 continue;
