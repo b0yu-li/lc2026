@@ -5,15 +5,15 @@ import java.util.Arrays;
 public class MaxNumberOfKSumPairs {
     public int maxOperations(int[] nums, int k) {
         // Step 0: Line them up smallest to biggest (sorting)
-        final int[] sorted = Arrays.stream(nums).sorted().toArray();
+        Arrays.sort(nums);
 
         int count = 0;
         int left = 0;
         int right = nums.length - 1;
 
         while (left < right) {
-            final int leftCandidate = sorted[left];
-            final int rightCandidate = sorted[right];
+            final int leftCandidate = nums[left];
+            final int rightCandidate = nums[right];
             // Case I: Found one pair, congrads! Let both go and count them up!
             if (k == leftCandidate + rightCandidate) {
                 count++;
