@@ -17,3 +17,6 @@
 ### Space Complexity Analysis
 
 ### Key & What to bear in mind
+
++ Waiting room analogy:
+  ![Waiting Room Analogy Diagram](/src/main/resources/1679-waiting-room-analogy.svg)
